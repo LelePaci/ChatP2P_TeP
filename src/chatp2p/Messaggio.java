@@ -25,5 +25,4 @@ public class Messaggio {
         String d = csv.substring(index + 1, csv.length());
         return new Messaggio(c, d);
     }
-
 }
