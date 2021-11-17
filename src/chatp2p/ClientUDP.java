@@ -25,14 +25,9 @@ public class ClientUDP extends Thread {
         this.port = 2003;
         this.client = new DatagramSocket(port);
         this.lastAddress = null;
-
-        
-
-        
     }
 
     @Override
-
     public void run() {
         while(true){
             try {
