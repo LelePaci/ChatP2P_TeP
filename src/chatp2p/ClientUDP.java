@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  */
 public class ClientUDP extends Thread {
 
-    private int port = 2003;
+    private int port;
     private DatagramSocket client;
     
     private InetAddress lastAddress;    
@@ -31,25 +31,26 @@ public class ClientUDP extends Thread {
     public void run() {
         while(true){
             try {
-                ricevi();
+                System.out.println(ricevi().dati);
             } catch (IOException ex) {
+                Logger.getLogger(ClientUDP.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
                 Logger.getLogger(ClientUDP.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
     
-    public Messaggio ricevi() throws IOException{
+    public Messaggio ricevi() throws IOException, Exception{
         byte[] buffer = new byte[1500];
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
         client.receive(packet);
         String messaggioRicevuto = new String(packet.getData(), 0, packet.getLength());
         lastAddress = packet.getAddress();
-        
-        System.out.println(messaggioRicevuto);
+        //System.out.println(messaggioRicevuto);
         return Messaggio.fromCSV(messaggioRicevuto);
     }
     
-    public void invia(String risposta) throws IOException{
+    public synchronized void invia(String risposta) throws IOException{
         byte[] responseBuffer = risposta.getBytes();
         DatagramPacket responsePacket = new DatagramPacket(responseBuffer, responseBuffer.length);
         responsePacket.setAddress(lastAddress);

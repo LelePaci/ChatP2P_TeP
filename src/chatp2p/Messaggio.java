@@ -19,10 +19,24 @@ public class Messaggio {
         this.dati = dati;
     }
 
-    public static Messaggio fromCSV(String csv) {
+    public static Messaggio fromCSV(String csv) throws Exception {
         int index = csv.indexOf(";");
-        String c = csv.substring(0, index);
-        String d = csv.substring(index + 1, csv.length());
-        return new Messaggio(c, d);
+        if (index == -1) {
+            throw new Exception("Messaggio ricevuto non corretto");
+        }
+        String cmd = csv.substring(0, index);
+        boolean err = true;
+        for (int i = 0; i < GestioneChat.getComandi().length; i++) {
+            String c = GestioneChat.getComandi()[i];
+            if (cmd.equals(c)) {
+                err = false;
+                break;
+            }
+        }
+        if (err) {
+            throw new Exception("Richiesta operazione non esistente");
+        }
+        String dat = csv.substring(index + 1, csv.length());
+        return new Messaggio(cmd, dat);
     }
 }

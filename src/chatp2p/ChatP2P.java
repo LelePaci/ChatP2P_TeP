@@ -5,6 +5,8 @@
  */
 package chatp2p;
 
+import java.net.SocketException;
+
 /**
  *
  * @author pacie
@@ -14,7 +16,8 @@ public class ChatP2P {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    public static void main(String[] args) throws SocketException {
+       ClientUDP client = new ClientUDP();
+       client.start();
     }
 }

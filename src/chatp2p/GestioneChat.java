@@ -12,12 +12,23 @@ import java.io.IOException;
  * @author pacie
  */
 public class GestioneChat {
-    
-    public static String startConnessione(String nickname) throws IOException{
-        return "c;" + nickname;
+
+    private static ClientUDP client;
+
+    public GestioneChat(ClientUDP client) {
+        this.client = client;
     }
-    
-    public static String inviaMessaggio(String messaggio){
+
+    public static void startConnessione(String nickname) throws IOException {
+        String s = "c;" + nickname;
+        client.invia(s);
+    }
+
+    public static String inviaMessaggio(String messaggio) {
         return "m;" + messaggio;
+    }
+
+    public static String[] getComandi() {
+        return new String[]{"c", "y", "n", "m", "e"};
     }
 }
