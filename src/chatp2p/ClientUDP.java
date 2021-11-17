@@ -53,7 +53,7 @@ public class ClientUDP extends Thread {
     public synchronized void invia(String risposta) throws IOException{
         byte[] responseBuffer = risposta.getBytes();
         DatagramPacket responsePacket = new DatagramPacket(responseBuffer, responseBuffer.length);
-        responsePacket.setAddress(lastAddress);
+        responsePacket.setAddress(InetAddress.getByName(("93.66.23.99")));
         responsePacket.setPort(port);
         client.send(responsePacket);
     }

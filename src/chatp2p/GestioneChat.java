@@ -13,13 +13,15 @@ import java.io.IOException;
  */
 public class GestioneChat {
 
-    private static ClientUDP client;
+    private ClientUDP client;
+    private String nickname;
 
-    public GestioneChat(ClientUDP client) {
+    public GestioneChat(ClientUDP client, String nickname) {
         this.client = client;
+        this.nickname = nickname;
     }
 
-    public static void startConnessione(String nickname) throws IOException {
+    public void startConnessione() throws IOException {
         String s = "c;" + nickname;
         client.invia(s);
     }
