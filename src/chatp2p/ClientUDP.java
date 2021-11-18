@@ -13,20 +13,30 @@ public class ClientUDP extends Thread {
 
     private int port;
     private DatagramSocket client;
-    
-    private InetAddress lastAddress;    
 
+    private InetAddress lastAddress;
+    private Connessione connessione;
     public ClientUDP() throws SocketException {
         this.port = 2003;
         this.client = new DatagramSocket(port);
         this.lastAddress = null;
+        this.connessione = new Connessione();
     }
 
     @Override
     public void run() {
-        while(true){
+        while (true) {
             try {
-                System.out.println(ricevi().dati);
+                switch (ricevi().comando) {
+                    case "e":
+                        if (lastAddress != connessione.getAddress() && connessione.getAddress() != null) {
+                            invia("n;");
+                        }
+                        //ricevo la richiesta di connessione
+                        //controllo che non ci sia un'altra connessione attiva
+                        // invio risposta
+                        break;
+                }
             } catch (IOException ex) {
                 Logger.getLogger(ClientUDP.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception ex) {
@@ -34,8 +44,8 @@ public class ClientUDP extends Thread {
             }
         }
     }
-    
-    public Messaggio ricevi() throws IOException, Exception{
+
+    public Messaggio ricevi() throws IOException, Exception {
         byte[] buffer = new byte[1500];
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
         client.receive(packet);
@@ -44,8 +54,8 @@ public class ClientUDP extends Thread {
         //System.out.println(messaggioRicevuto);
         return Messaggio.fromCSV(messaggioRicevuto);
     }
-    
-    public synchronized void invia(String risposta) throws IOException{
+
+    public synchronized void invia(String risposta) throws IOException {
         byte[] responseBuffer = risposta.getBytes();
         DatagramPacket responsePacket = new DatagramPacket(responseBuffer, responseBuffer.length);
         responsePacket.setAddress(InetAddress.getByName(("93.66.23.99")));

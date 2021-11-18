@@ -36,7 +36,6 @@ public class ChatP2P {
                 case "start":
                     nickname.setEditable(false);
                     chat.startConnessione();
-                    
                     break;
             }
         }
