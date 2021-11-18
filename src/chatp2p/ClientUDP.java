@@ -16,11 +16,14 @@ public class ClientUDP extends Thread {
 
     private InetAddress lastAddress;
     private Connessione connessione;
-    public ClientUDP() throws SocketException {
+    private Nickname n;
+
+    public ClientUDP(Nickname n) throws SocketException, UnknownHostException {
         this.port = 2003;
         this.client = new DatagramSocket(port);
         this.lastAddress = null;
         this.connessione = new Connessione();
+        this.n = n;
     }
 
     @Override
@@ -28,13 +31,10 @@ public class ClientUDP extends Thread {
         while (true) {
             try {
                 switch (ricevi().comando) {
-                    case "e":
-                        if (lastAddress != connessione.getAddress() && connessione.getAddress() != null) {
-                            invia("n;");
-                        }
-                        //ricevo la richiesta di connessione
-                        //controllo che non ci sia un'altra connessione attiva
-                        // invio risposta
+                    case "c":
+                        richiestaConnessione();
+                        break;
+                    case "y":
                         break;
                 }
             } catch (IOException ex) {
@@ -51,7 +51,7 @@ public class ClientUDP extends Thread {
         client.receive(packet);
         String messaggioRicevuto = new String(packet.getData(), 0, packet.getLength());
         lastAddress = packet.getAddress();
-        //System.out.println(messaggioRicevuto);
+        System.out.println(messaggioRicevuto);
         return Messaggio.fromCSV(messaggioRicevuto);
     }
 
@@ -61,5 +61,16 @@ public class ClientUDP extends Thread {
         responsePacket.setAddress(InetAddress.getByName(("93.66.23.99")));
         responsePacket.setPort(port);
         client.send(responsePacket);
+    }
+
+    private void richiestaConnessione() throws IOException {
+        if (connessione.getAddress() == null) {
+            connessione.setAddress(lastAddress);
+            invia("y;" + n.getNickname());
+        } else if (lastAddress != connessione.getAddress()) {
+            invia("n;");
+        } else {
+            invia("y;" + n.getNickname());
+        }
     }
 }

@@ -21,6 +21,10 @@ public class GestioneChat {
         this.nickname = nickname;
     }
 
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+    
     public void startConnessione() throws IOException {
         String s = "c;" + nickname;
         client.invia(s);

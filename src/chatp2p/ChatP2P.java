@@ -17,10 +17,11 @@ public class ChatP2P {
     private static Nickname nickname;
 
     public static void main(String[] args) throws SocketException, IOException {
-        ClientUDP client = new ClientUDP();
+        nickname = new Nickname();
+        ClientUDP client = new ClientUDP(nickname);
         client.start();
         GestioneChat chat = new GestioneChat(client, "guest1");
-        nickname = new Nickname();
+        
         sc = new Scanner(System.in);
         //Start connessione
         //Chat
@@ -35,6 +36,7 @@ public class ChatP2P {
                     break;
                 case "start":
                     nickname.setEditable(false);
+                    chat.setNickname(nickname.getNickname());
                     chat.startConnessione();
                     break;
             }

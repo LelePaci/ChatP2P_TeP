@@ -3,11 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Users/Emanuele%20Paci/Documents/GitHub/ChatP2P_TeP/src/chatp2p/GestioneChat.java</file>
             <file>file:/D:/Users/Emanuele%20Paci/Documents/GitHub/ChatP2P_TeP/src/chatp2p/ClientUDP.java</file>
             <file>file:/D:/Users/Emanuele%20Paci/Documents/GitHub/ChatP2P_TeP/src/chatp2p/Messaggio.java</file>
             <file>file:/D:/Users/Emanuele%20Paci/Documents/GitHub/ChatP2P_TeP/src/chatp2p/ChatP2P.java</file>
-            <file>file:/D:/Users/Emanuele%20Paci/Documents/GitHub/ChatP2P_TeP/src/chatp2p/AddrAndNick.java</file>
+            <file>file:/D:/Users/Emanuele%20Paci/Documents/GitHub/ChatP2P_TeP/src/chatp2p/Nickname.java</file>
+            <file>file:/D:/Users/Emanuele%20Paci/Documents/GitHub/ChatP2P_TeP/src/chatp2p/Connessione.java</file>
         </group>
     </open-files>
 </project-private>
