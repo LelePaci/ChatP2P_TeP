@@ -32,6 +32,10 @@ public class ClientUDP extends Thread {
                         richiestaConnessione(m.dati);
                         break;
                     case "y":
+                        System.out.println(m.dati);
+                        if (m.dati.length()>=1) {
+                            Condivisa.connessione.setConnectionNickname(m.dati);
+                        }
                         Condivisa.frame.setConnessione();
                         break;
                     case "n":
@@ -80,11 +84,8 @@ public class ClientUDP extends Thread {
         } else if (lastAddress != Condivisa.connessione.getAddress()) {
             
             invia("n;");
-        }
-        if(Condivisa.connessione.getAddress() == lastAddress){
+        }else if(Condivisa.connessione.getAddress() == lastAddress){
             invia("y;" + Condivisa.nickname.getNickname());
         }
-        System.out.println(lastAddress.toString());
-            System.out.println(Condivisa.connessione.getAddress());
     }
 }

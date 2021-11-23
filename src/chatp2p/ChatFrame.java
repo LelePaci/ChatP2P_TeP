@@ -232,17 +232,18 @@ public class ChatFrame extends javax.swing.JFrame {
 
     public int PopupConfermaConnessione() {
         int input = JOptionPane.showConfirmDialog(null, "Accettare la connessione con  " + Condivisa.connessione.getConnectionNickname() + "?");
+        //int n = JOptionPane.showConfirmDialog(null, "Would you like green eggs and ham?", "An Inane Question",JOptionPane.YES_NO_OPTION);
         System.out.println(input);
         return input;
     }
-    
-    public void setConnessione(){
-        jLabel4.setText("Connesso con: " + Condivisa.connessione.getConnectionNickname() + " ("  + Condivisa.connessione.getAddress().toString() + ")");
+
+    public void setConnessione() {
+        jLabel4.setText("Connesso con: " + Condivisa.connessione.getConnectionNickname() + " (" + Condivisa.connessione.getAddress().toString() + ")");
         jButton4.setEnabled(true);
         jButton1.setEnabled(false);
         jButton3.setEnabled(false);
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
