@@ -17,24 +17,32 @@ public class ClientUDP extends Thread {
     private InetAddress lastAddress;
     private Connessione connessione;
     private Nickname n;
+    private GestioneChat chat;
 
-    public ClientUDP(Nickname n) throws SocketException, UnknownHostException {
+    public ClientUDP(Nickname n, Connessione connessione) throws SocketException, UnknownHostException {
         this.port = 2003;
         this.client = new DatagramSocket(port);
         this.lastAddress = null;
-        this.connessione = new Connessione();
+        this.connessione = connessione;
         this.n = n;
+        this.chat = chat;
     }
 
     @Override
     public void run() {
         while (true) {
             try {
-                switch (ricevi().comando) {
+                Messaggio m=ricevi();
+                switch (m.comando) {
                     case "c":
-                        richiestaConnessione();
+                        richiestaConnessione(m.dati);
                         break;
                     case "y":
+                        connessione.setCanText(true);
+                        break;
+                    case "n":
+                        break;
+                    default:
                         break;
                 }
             } catch (IOException ex) {
@@ -58,19 +66,25 @@ public class ClientUDP extends Thread {
     public synchronized void invia(String risposta) throws IOException {
         byte[] responseBuffer = risposta.getBytes();
         DatagramPacket responsePacket = new DatagramPacket(responseBuffer, responseBuffer.length);
-        responsePacket.setAddress(InetAddress.getByName(("93.66.23.99")));
+        //responsePacket.setAddress(InetAddress.getByName(("172.22.198.197")));
+        //responsePacket.setAddress(InetAddress.getByName(("172.16.102.110")));
+        responsePacket.setAddress(connessione.getAddress());
         responsePacket.setPort(port);
         client.send(responsePacket);
     }
 
-    private void richiestaConnessione() throws IOException {
+    private void richiestaConnessione(String nick) throws IOException {
+
         if (connessione.getAddress() == null) {
+            //Chiedo all'utente se vuole confermare la connessione
+            
+            connessione.setPending(true);
             connessione.setAddress(lastAddress);
-            invia("y;" + n.getNickname());
+            connessione.setNickname(nick);
+            //connessione.setAddress(lastAddress);
+            //invia("y;" + n.getNickname());
         } else if (lastAddress != connessione.getAddress()) {
             invia("n;");
-        } else {
-            invia("y;" + n.getNickname());
         }
     }
 }

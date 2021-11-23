@@ -15,6 +15,7 @@ public class GestioneChat {
 
     private ClientUDP client;
     private String nickname;
+    
 
     public GestioneChat(ClientUDP client, String nickname) {
         this.client = client;
@@ -26,12 +27,22 @@ public class GestioneChat {
     }
     
     public void startConnessione() throws IOException {
-        String s = "c;" + nickname;
-        client.invia(s);
+        client.invia(Messaggio.toCSV("c", nickname));
     }
-
-    public static String inviaMessaggio(String messaggio) {
-        return "m;" + messaggio;
+    
+    public void accettaConnessione() throws IOException {
+        System.out.println(nickname);
+        client.invia(Messaggio.toCSV("y", nickname));
+        System.out.println(Messaggio.toCSV("y", nickname));
+    }
+    
+    public void rifiutaConnessione() throws IOException {
+        client.invia(Messaggio.toCSV("n", ""));
+    }
+    
+    public void inviaMessaggio(String comando, String messaggio) throws IOException {
+        
+        client.invia(Messaggio.toCSV(comando, messaggio));
     }
 
     public static String[] getComandi() {

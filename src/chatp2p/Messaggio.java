@@ -34,4 +34,8 @@ public class Messaggio {
         String dat = csv.substring(index + 1, csv.length());
         return new Messaggio(cmd, dat);
     }
+    
+    public static String toCSV(String comando, String messaggio){
+        return comando + ";" + messaggio;
+    }
 }
