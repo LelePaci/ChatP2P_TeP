@@ -23,7 +23,8 @@ public class ChatFrame extends javax.swing.JFrame {
      */
     public ChatFrame() {
         initComponents();
-        jLabel1.setText("CIAO2");
+        
+        Condivisa.f = this;
     }
 
     /**
@@ -35,7 +36,6 @@ public class ChatFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -43,8 +43,6 @@ public class ChatFrame extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setText("CIAO");
 
         jPanel1.setBackground(new java.awt.Color(153, 0, 255));
 
@@ -91,31 +89,23 @@ public class ChatFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(123, 123, 123)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(136, 136, 136)
-                .addComponent(jLabel1)
-                .addContainerGap(213, Short.MAX_VALUE))
+                .addContainerGap(365, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-        private static Scanner sc;
+    private static Scanner sc;
     private static Nickname nickname;
     private static Connessione connessione;
     private static GestioneChat chat;
-    
-    
+
     /**
      * @param args the command line arguments
      */
@@ -149,9 +139,8 @@ public class ChatFrame extends javax.swing.JFrame {
                 new ChatFrame().setVisible(true);
             }
         });
-        
-        
-           nickname = new Nickname();
+
+        nickname = new Nickname();
         connessione = new Connessione();
         ClientUDP client = new ClientUDP(nickname, connessione);
         client.start();
@@ -172,24 +161,32 @@ public class ChatFrame extends javax.swing.JFrame {
                 case "start":
                     startConnessione();
                     break;
+                case "test":
+                   Condivisa.f.Popup();
+                    break;
                 default:
                     if (connessione.isPending()) {
-                        System.out.println("Vuoi accettare la richeista da "+connessione.getNickname()+"?");
+                        System.out.println("Vuoi accettare la richeista da " + connessione.getNickname() + "?");
                         if (input.equals("y")) {
                             System.out.println("Connessione accettata");
                             chat.accettaConnessione();
                         }
                         if (input.equals("n")) {
                             System.out.println("Connessione rifiutata");
-                            chat.rifiutaConnessione(); 
+                            chat.rifiutaConnessione();
                         }
                     }
                     break;
             }
         }
-        
+
     }
- public static void setNickname() {
+    
+    public void Popup() {
+       jLabel3.setText("CIAO2");
+    }
+
+    public static void setNickname() {
         if (nickname.isEditable()) {
             System.out.println("Inserisci nuovo nickname:");
             nickname.setNickname(sc.nextLine());
@@ -208,7 +205,6 @@ public class ChatFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;

@@ -78,6 +78,7 @@ public class ClientUDP extends Thread {
         if (connessione.getAddress() == null) {
             //Chiedo all'utente se vuole confermare la connessione
             
+            Condivisa.f.Popup();
             connessione.setPending(true);
             connessione.setAddress(lastAddress);
             connessione.setNickname(nick);
