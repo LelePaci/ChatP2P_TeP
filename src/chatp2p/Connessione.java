@@ -38,10 +38,6 @@ public class Connessione {
         this.connectionNickname = nickname;
     }
 
-    public void setPending(boolean pending) {
-        this.pending = pending;
-    }
-
     public void setCanText(boolean canText) {
         this.canText = canText;
     }
@@ -52,10 +48,6 @@ public class Connessione {
 
     public String getConnectionNickname() {
         return connectionNickname;
-    }
-
-    public boolean isPending() {
-        return pending;
     }
     
     public boolean canText(){

@@ -1,31 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package chatp2p;
 
-import static chatp2p.ChatP2P.setNickname;
-import static chatp2p.ChatP2P.startConnessione;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author paci_emanuele
- */
 public class ChatFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ChatFrame
-     */
-    public ChatFrame() {
+    public ChatFrame() throws UnknownHostException, SocketException {
         initComponents();
 
-        Condivisa.f = this;
+        Nickname nickname = new Nickname();
+        Connessione connessione = new Connessione();
+        ClientUDP client = new ClientUDP();
+        client.start();
+        GestioneChat chat = new GestioneChat();
+
+        Condivisa.frame = this;
+        Condivisa.nickname = nickname;
+        Condivisa.connessione = connessione;
+        Condivisa.chat = chat;
+        Condivisa.client = client;
     }
 
     /**
@@ -64,13 +61,14 @@ public class ChatFrame extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Nickname: guest1");
+        jLabel3.setText("Nickname: guest");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Connessione: nessuna");
+        jLabel4.setText("Connesso con: nessuno");
 
         jButton4.setText("Chiudi Connessione");
+        jButton4.setEnabled(false);
         jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButton4MouseClicked(evt);
@@ -83,32 +81,31 @@ public class ChatFrame extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButton4)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
+                .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(4, 4, 4)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
                     .addComponent(jButton1)
+                    .addComponent(jButton3)
                     .addComponent(jButton4))
-                .addContainerGap())
+                .addGap(14, 14, 14))
         );
 
         jButton1.getAccessibleContext().setAccessibleName("btnCambiaNickname");
@@ -123,7 +120,7 @@ public class ChatFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 339, Short.MAX_VALUE))
+                .addGap(0, 307, Short.MAX_VALUE))
         );
 
         pack();
@@ -131,11 +128,11 @@ public class ChatFrame extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         //CAMBIA NICKNAME
-        if (nickname.isEditable()) {
+        if (Condivisa.nickname.isEditable()) {
             String s = (String) JOptionPane.showInputDialog(null, "Inserisci nuovo nickname", "Cambia nickname", JOptionPane.PLAIN_MESSAGE);
-            chat.setNickname(s);
-            Condivisa.f.jLabel3.setText("Nickname: " + s);
-        }else{
+            Condivisa.nickname.setNickname(s);
+            Condivisa.frame.jLabel3.setText("Nickname: " + Condivisa.nickname.getNickname());
+        } else {
             JOptionPane.showMessageDialog(null, "Non è possibile cambiare il nickname in questo momento");
         }
     }//GEN-LAST:event_jButton1MouseClicked
@@ -143,17 +140,26 @@ public class ChatFrame extends javax.swing.JFrame {
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
         //NUOVA CONNESSIONE
         String s = (String) JOptionPane.showInputDialog(null, "Inserisci indirizzo IP", "Nuova connessione", JOptionPane.PLAIN_MESSAGE);
-        System.out.println(s);
+        try {
+            Condivisa.connessione.setAddressFromString(s);
+            Condivisa.chat.startConnessione();
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(ChatFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ChatFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        /*
+            nickname.setEditable(false);
+            chat.setNickname(nickname.getNickname());
+            chat.startConnessione(); 
+         */
+
     }//GEN-LAST:event_jButton3MouseClicked
 
     private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
-        // TODO add your handling code here:
+        //CHIUDI CONNESSIONE
     }//GEN-LAST:event_jButton4MouseClicked
-
-    private static Scanner sc;
-    private static Nickname nickname;
-    private static Connessione connessione;
-    private static GestioneChat chat;
 
     /**
      * @param args the command line arguments
@@ -185,19 +191,16 @@ public class ChatFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ChatFrame().setVisible(true);
+                try {
+                    new ChatFrame().setVisible(true);
+                } catch (UnknownHostException ex) {
+                    Logger.getLogger(ChatFrame.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SocketException ex) {
+                    Logger.getLogger(ChatFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
-
-        nickname = new Nickname();
-
-        connessione = new Connessione();
-        ClientUDP client = new ClientUDP(nickname, connessione);
-        client.start();
-        chat = new GestioneChat(client, nickname.getNickname());
-
-        sc = new Scanner(System.in);
-
+        /*
         while (true) {
             String input = sc.nextLine();
             switch (input) {
@@ -224,27 +227,22 @@ public class ChatFrame extends javax.swing.JFrame {
         }
 
     }
-
-    public void Popup() {
-        jLabel3.setText("CIAO2");
+         */
     }
 
-    public static void setNickname() {
-        if (nickname.isEditable()) {
-
-            nickname.setNickname(sc.nextLine());
-        } else {
-            System.out.println("Adesso non è possibile modificare il nickname");
-        }
+    public int PopupConfermaConnessione() {
+        int input = JOptionPane.showConfirmDialog(null, "Accettare la connessione con  " + Condivisa.connessione.getConnectionNickname() + "?");
+        System.out.println(input);
+        return input;
     }
-
-    public static void startConnessione() throws UnknownHostException, IOException {
-        System.out.println("inserisci indirizzo IP");
-        connessione.setAddressFromString(sc.nextLine());
-        nickname.setEditable(false);
-        chat.setNickname(nickname.getNickname());
-        chat.startConnessione();
+    
+    public void setConnessione(){
+        jLabel4.setText("Connesso con: " + Condivisa.connessione.getConnectionNickname() + " ("  + Condivisa.connessione.getAddress().toString() + ")");
+        jButton4.setEnabled(true);
+        jButton1.setEnabled(false);
+        jButton3.setEnabled(false);
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;

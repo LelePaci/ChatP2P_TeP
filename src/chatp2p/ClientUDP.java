@@ -15,17 +15,11 @@ public class ClientUDP extends Thread {
     private DatagramSocket client;
 
     private InetAddress lastAddress;
-    private Connessione connessione;
-    private Nickname n;
-    private GestioneChat chat;
 
-    public ClientUDP(Nickname n, Connessione connessione) throws SocketException, UnknownHostException {
+    public ClientUDP() throws SocketException, UnknownHostException {
         this.port = 2003;
         this.client = new DatagramSocket(port);
         this.lastAddress = null;
-        this.connessione = connessione;
-        this.n = n;
-        this.chat = chat;
     }
 
     @Override
@@ -38,7 +32,7 @@ public class ClientUDP extends Thread {
                         richiestaConnessione(m.dati);
                         break;
                     case "y":
-                        connessione.setCanText(true);
+                        Condivisa.frame.setConnessione();
                         break;
                     case "n":
                         break;
@@ -66,26 +60,31 @@ public class ClientUDP extends Thread {
     public synchronized void invia(String risposta) throws IOException {
         byte[] responseBuffer = risposta.getBytes();
         DatagramPacket responsePacket = new DatagramPacket(responseBuffer, responseBuffer.length);
-        //responsePacket.setAddress(InetAddress.getByName(("172.22.198.197")));
-        //responsePacket.setAddress(InetAddress.getByName(("172.16.102.110")));
-        responsePacket.setAddress(connessione.getAddress());
+        responsePacket.setAddress(Condivisa.connessione.getAddress());
         responsePacket.setPort(port);
         client.send(responsePacket);
     }
 
     private void richiestaConnessione(String nick) throws IOException {
-
-        if (connessione.getAddress() == null) {
+        if (Condivisa.connessione.getAddress() == null) {
             //Chiedo all'utente se vuole confermare la connessione
+            Condivisa.connessione.setAddress(lastAddress);
+            Condivisa.connessione.setConnectionNickname(nick);
+            int index = Condivisa.frame.PopupConfermaConnessione();
+            if (index == 0) {
+                Condivisa.chat.accettaConnessione();
+            }
+            if (index == 1) {
+                Condivisa.chat.rifiutaConnessione();
+            }
+        } else if (lastAddress != Condivisa.connessione.getAddress()) {
             
-            Condivisa.f.Popup();
-            connessione.setPending(true);
-            connessione.setAddress(lastAddress);
-            connessione.setConnectionNickname(nick);
-            //connessione.setAddress(lastAddress);
-            //invia("y;" + n.getNickname());
-        } else if (lastAddress != connessione.getAddress()) {
             invia("n;");
         }
+        if(Condivisa.connessione.getAddress() == lastAddress){
+            invia("y;" + Condivisa.nickname.getNickname());
+        }
+        System.out.println(lastAddress.toString());
+            System.out.println(Condivisa.connessione.getAddress());
     }
 }

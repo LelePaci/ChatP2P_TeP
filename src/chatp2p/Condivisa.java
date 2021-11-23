@@ -10,5 +10,9 @@ package chatp2p;
  * @author paci_emanuele
  */
  public class Condivisa {
-    static ChatFrame f;
+    static ChatFrame frame;
+    static Nickname nickname;
+    static GestioneChat chat;
+    static Connessione connessione;
+    static ClientUDP client;
 }
