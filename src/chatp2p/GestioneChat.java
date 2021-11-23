@@ -31,7 +31,6 @@ public class GestioneChat {
     }
     
     public void accettaConnessione() throws IOException {
-        System.out.println(nickname);
         client.invia(Messaggio.toCSV("y", nickname));
         System.out.println(Messaggio.toCSV("y", nickname));
     }

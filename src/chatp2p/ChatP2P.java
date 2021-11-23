@@ -43,7 +43,7 @@ public class ChatP2P {
                     break;
                 default:
                     if (connessione.isPending()) {
-                        System.out.println("Vuoi accettare la richeista da "+connessione.getNickname()+"?");
+                        System.out.println("Vuoi accettare la richeista da "+connessione.getConnectionNickname()+"?");
                         if (input.equals("y")) {
                             System.out.println("Connessione accettata");
                             chat.accettaConnessione();

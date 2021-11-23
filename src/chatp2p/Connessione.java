@@ -10,21 +10,20 @@ import java.net.UnknownHostException;
  */
 public class Connessione {
     private InetAddress address;
-    private String nickname;
+    private String connectionNickname;
     private boolean pending;
     private boolean canText;
 
     public Connessione() throws UnknownHostException {
-        //this.address = InetAddress.getByName("localhost");
         this.address = null;
-        nickname = null;
+        connectionNickname = null;
         pending = false;
         canText = false;
     }
     
     public Connessione(InetAddress address, String nickname) {
         this.address = address;
-        this.nickname = nickname;
+        this.connectionNickname = nickname;
     }
 
     public void setAddress(InetAddress address) {
@@ -35,8 +34,8 @@ public class Connessione {
         this.address = InetAddress.getByName(address);
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setConnectionNickname(String nickname) {
+        this.connectionNickname = nickname;
     }
 
     public void setPending(boolean pending) {
@@ -51,8 +50,8 @@ public class Connessione {
         return address;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getConnectionNickname() {
+        return connectionNickname;
     }
 
     public boolean isPending() {

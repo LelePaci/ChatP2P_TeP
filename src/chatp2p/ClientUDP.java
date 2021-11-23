@@ -81,7 +81,7 @@ public class ClientUDP extends Thread {
             Condivisa.f.Popup();
             connessione.setPending(true);
             connessione.setAddress(lastAddress);
-            connessione.setNickname(nick);
+            connessione.setConnectionNickname(nick);
             //connessione.setAddress(lastAddress);
             //invia("y;" + n.getNickname());
         } else if (lastAddress != connessione.getAddress()) {

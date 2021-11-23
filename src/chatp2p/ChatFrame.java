@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -23,7 +24,7 @@ public class ChatFrame extends javax.swing.JFrame {
      */
     public ChatFrame() {
         initComponents();
-        
+
         Condivisa.f = this;
     }
 
@@ -41,14 +42,25 @@ public class ChatFrame extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(153, 0, 255));
 
         jButton1.setText("Cambia Nickname");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
 
         jButton3.setText("Nuova Connessione");
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton3MouseClicked(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -58,32 +70,48 @@ public class ChatFrame extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Connessione: nessuna");
 
+        jButton4.setText("Chiudi Connessione");
+        jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton4MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton1)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton3)
+                    .addComponent(jButton1)
+                    .addComponent(jButton4))
+                .addContainerGap())
         );
+
+        jButton1.getAccessibleContext().setAccessibleName("btnCambiaNickname");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -95,11 +123,32 @@ public class ChatFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(365, Short.MAX_VALUE))
+                .addGap(0, 339, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        //CAMBIA NICKNAME
+        if (nickname.isEditable()) {
+            String s = (String) JOptionPane.showInputDialog(null, "Inserisci nuovo nickname", "Cambia nickname", JOptionPane.PLAIN_MESSAGE);
+            chat.setNickname(s);
+            Condivisa.f.jLabel3.setText("Nickname: " + s);
+        }else{
+            JOptionPane.showMessageDialog(null, "Non è possibile cambiare il nickname in questo momento");
+        }
+    }//GEN-LAST:event_jButton1MouseClicked
+
+    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+        //NUOVA CONNESSIONE
+        String s = (String) JOptionPane.showInputDialog(null, "Inserisci indirizzo IP", "Nuova connessione", JOptionPane.PLAIN_MESSAGE);
+        System.out.println(s);
+    }//GEN-LAST:event_jButton3MouseClicked
+
+    private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4MouseClicked
 
     private static Scanner sc;
     private static Nickname nickname;
@@ -141,32 +190,26 @@ public class ChatFrame extends javax.swing.JFrame {
         });
 
         nickname = new Nickname();
+
         connessione = new Connessione();
         ClientUDP client = new ClientUDP(nickname, connessione);
         client.start();
-        chat = new GestioneChat(client, "guest1");
+        chat = new GestioneChat(client, nickname.getNickname());
 
         sc = new Scanner(System.in);
-        //Start connessione
-        //Chat
-        //Chiusura connessione
 
         while (true) {
             String input = sc.nextLine();
             switch (input) {
-                case "setup":
-                    //Inserimento nickname
-                    setNickname();
-                    break;
                 case "start":
                     startConnessione();
                     break;
                 case "test":
-                   Condivisa.f.Popup();
+                    Condivisa.f.Popup();
                     break;
                 default:
                     if (connessione.isPending()) {
-                        System.out.println("Vuoi accettare la richeista da " + connessione.getNickname() + "?");
+                        System.out.println("Vuoi accettare la richeista da " + connessione.getConnectionNickname() + "?");
                         if (input.equals("y")) {
                             System.out.println("Connessione accettata");
                             chat.accettaConnessione();
@@ -181,14 +224,14 @@ public class ChatFrame extends javax.swing.JFrame {
         }
 
     }
-    
+
     public void Popup() {
-       jLabel3.setText("CIAO2");
+        jLabel3.setText("CIAO2");
     }
 
     public static void setNickname() {
         if (nickname.isEditable()) {
-            System.out.println("Inserisci nuovo nickname:");
+
             nickname.setNickname(sc.nextLine());
         } else {
             System.out.println("Adesso non è possibile modificare il nickname");
@@ -205,6 +248,7 @@ public class ChatFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
