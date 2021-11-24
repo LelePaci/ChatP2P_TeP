@@ -148,13 +148,6 @@ public class ChatFrame extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(ChatFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        /*
-            nickname.setEditable(false);
-            chat.setNickname(nickname.getNickname());
-            chat.startConnessione(); 
-         */
-
     }//GEN-LAST:event_jButton3MouseClicked
 
     private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
@@ -170,7 +163,6 @@ public class ChatFrame extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(ChatFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }//GEN-LAST:event_jButton4MouseClicked
 
     /**
@@ -212,34 +204,6 @@ public class ChatFrame extends javax.swing.JFrame {
                 }
             }
         });
-        /*
-        while (true) {
-            String input = sc.nextLine();
-            switch (input) {
-                case "start":
-                    startConnessione();
-                    break;
-                case "test":
-                    Condivisa.f.Popup();
-                    break;
-                default:
-                    if (connessione.isPending()) {
-                        System.out.println("Vuoi accettare la richeista da " + connessione.getConnectionNickname() + "?");
-                        if (input.equals("y")) {
-                            System.out.println("Connessione accettata");
-                            chat.accettaConnessione();
-                        }
-                        if (input.equals("n")) {
-                            System.out.println("Connessione rifiutata");
-                            chat.rifiutaConnessione();
-                        }
-                    }
-                    break;
-            }
-        }
-
-    }
-         */
     }
 
     public int PopupConfermaConnessione() {
