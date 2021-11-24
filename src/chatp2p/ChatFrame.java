@@ -47,6 +47,11 @@ public class ChatFrame extends javax.swing.JFrame {
         list1 = new java.awt.List();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(153, 0, 255));
 
@@ -207,6 +212,16 @@ public class ChatFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextField1KeyPressed
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        if (Condivisa.connessione.getAddress() != null) {
+            try {
+                Condivisa.chat.chiudiConnessione();
+            } catch (IOException ex) {
+                Logger.getLogger(ChatFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_formWindowClosing
+
     /**
      * @param args the command line arguments
      */
@@ -292,7 +307,7 @@ public class ChatFrame extends javax.swing.JFrame {
         list1.add(toAdd);
     }
 
-    public void pressEnter(){
+    public void pressEnter() {
         if (jTextField1.getText().length() != 0) {
             addTextToList(Condivisa.nickname.getNickname(), jTextField1.getText());
             try {
