@@ -116,6 +116,11 @@ public class ChatFrame extends javax.swing.JFrame {
         jButton1.getAccessibleContext().setAccessibleName("btnCambiaNickname");
 
         jTextField1.setEnabled(false);
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
+        });
 
         jButton2.setText("Invia");
         jButton2.setEnabled(false);
@@ -192,16 +197,15 @@ public class ChatFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4MouseClicked
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
-        if (jTextField1.getText().length() != 0) {
-            addTextToList(Condivisa.nickname.getNickname(), jTextField1.getText());
-            try {
-                Condivisa.chat.inviaMessaggio(jTextField1.getText());
-            } catch (IOException ex) {
-                Logger.getLogger(ChatFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            jTextField1.setText("");
-        }
+        pressEnter();
     }//GEN-LAST:event_jButton2MouseClicked
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        //System.out.println(evt.getKeyCode());
+        if (evt.getKeyCode() == 10) {
+            pressEnter();
+        }
+    }//GEN-LAST:event_jTextField1KeyPressed
 
     /**
      * @param args the command line arguments
@@ -280,6 +284,7 @@ public class ChatFrame extends javax.swing.JFrame {
         jButton2.setEnabled(false);
         jTextField1.setEnabled(false);
         PopupInformativo("La connessione è terminata");
+        list1.clear();
     }
 
     public void addTextToList(String nickname, String messaggio) {
@@ -287,6 +292,17 @@ public class ChatFrame extends javax.swing.JFrame {
         list1.add(toAdd);
     }
 
+    public void pressEnter(){
+        if (jTextField1.getText().length() != 0) {
+            addTextToList(Condivisa.nickname.getNickname(), jTextField1.getText());
+            try {
+                Condivisa.chat.inviaMessaggio(jTextField1.getText());
+            } catch (IOException ex) {
+                Logger.getLogger(ChatFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            jTextField1.setText("");
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
