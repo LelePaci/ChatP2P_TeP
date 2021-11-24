@@ -23,6 +23,8 @@ public class ChatFrame extends javax.swing.JFrame {
         Condivisa.connessione = connessione;
         Condivisa.chat = chat;
         Condivisa.client = client;
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -40,6 +42,9 @@ public class ChatFrame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
+        list1 = new java.awt.List();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -105,22 +110,49 @@ public class ChatFrame extends javax.swing.JFrame {
                     .addComponent(jButton1)
                     .addComponent(jButton3)
                     .addComponent(jButton4))
-                .addGap(14, 14, 14))
+                .addContainerGap())
         );
 
         jButton1.getAccessibleContext().setAccessibleName("btnCambiaNickname");
+
+        jTextField1.setEnabled(false);
+
+        jButton2.setText("Invia");
+        jButton2.setEnabled(false);
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
+
+        list1.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(list1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTextField1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 307, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(list1, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
+                .addContainerGap())
         );
 
         pack();
@@ -152,18 +184,24 @@ public class ChatFrame extends javax.swing.JFrame {
 
     private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
         try {
-            //CHIUDI CONNESSIONE
             Condivisa.chat.chiudiConnessione();
-            Condivisa.connessione.setTempAddress(null);
-            Condivisa.connessione.setAddress(null);
-            Condivisa.connessione.setConnectionNickname("");
-            Condivisa.connessione.setTempNickname("");
-            Condivisa.connessione.CanConnect(true);
-            chiudiConnessione();
         } catch (IOException ex) {
             Logger.getLogger(ChatFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
+        chiudiConnessione();
     }//GEN-LAST:event_jButton4MouseClicked
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        if (jTextField1.getText().length() != 0) {
+            addTextToList(Condivisa.nickname.getNickname(), jTextField1.getText());
+            try {
+                Condivisa.chat.inviaMessaggio(jTextField1.getText());
+            } catch (IOException ex) {
+                Logger.getLogger(ChatFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            jTextField1.setText("");
+        }
+    }//GEN-LAST:event_jButton2MouseClicked
 
     /**
      * @param args the command line arguments
@@ -222,21 +260,42 @@ public class ChatFrame extends javax.swing.JFrame {
         jButton4.setEnabled(true);
         jButton1.setEnabled(false);
         jButton3.setEnabled(false);
+        list1.setEnabled(true);
+        jButton2.setEnabled(true);
+        jTextField1.setEnabled(true);
     }
 
     public void chiudiConnessione() {
+        //CHIUDI CONNESSIONE
+        Condivisa.connessione.setTempAddress(null);
+        Condivisa.connessione.setAddress(null);
+        Condivisa.connessione.setConnectionNickname("");
+        Condivisa.connessione.setTempNickname("");
+        Condivisa.connessione.CanConnect(true);
         jLabel4.setText("Connesso con: nessuno");
         jButton4.setEnabled(false);
         jButton1.setEnabled(true);
         jButton3.setEnabled(true);
+        list1.setEnabled(false);
+        jButton2.setEnabled(false);
+        jTextField1.setEnabled(false);
+        PopupInformativo("La connessione è terminata");
+    }
+
+    public void addTextToList(String nickname, String messaggio) {
+        String toAdd = nickname + ": " + messaggio;
+        list1.add(toAdd);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField jTextField1;
+    private java.awt.List list1;
     // End of variables declaration//GEN-END:variables
 }

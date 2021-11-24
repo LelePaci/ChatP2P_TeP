@@ -29,8 +29,8 @@ public class GestioneChat {
         Condivisa.connessione.CanConnect(true);
     }
     
-    public void inviaMessaggio(String comando, String dati) throws IOException { 
-        Condivisa.client.send(Condivisa.connessione.getAddress(), new Messaggio(comando, dati));
+    public void inviaMessaggio(String dati) throws IOException { 
+        Condivisa.client.send(Condivisa.connessione.getAddress(), new Messaggio("m", dati));
     }
     
     public void chiudiConnessione() throws IOException{

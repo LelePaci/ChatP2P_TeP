@@ -45,6 +45,12 @@ public class ClientUDP extends Thread {
                     case "n":
                         Condivisa.connessione.setTempAddress(null);
                         break;
+                    case "m":
+                        Condivisa.frame.addTextToList(Condivisa.connessione.getConnectionNickname(), m.dati);
+                        break;
+                    case "e":
+                        Condivisa.frame.chiudiConnessione();
+                        break;
                     default:
                         break;
                 }
