@@ -11,8 +11,8 @@ import java.util.logging.Logger;
  */
 public class ClientUDP extends Thread {
 
-    private int port;
-    private DatagramSocket client;
+    private final int port;
+    private final DatagramSocket client;
 
     private InetAddress lastAddress;
 
@@ -26,19 +26,24 @@ public class ClientUDP extends Thread {
     public void run() {
         while (true) {
             try {
-                Messaggio m=ricevi();
+                Messaggio m = receive();
                 switch (m.comando) {
                     case "c":
-                        richiestaConnessione(m.dati);
+                        connectionRequest(m.dati);
                         break;
                     case "y":
-                        System.out.println(m.dati);
                         if (m.dati.length()>=1) {
                             Condivisa.connessione.setConnectionNickname(m.dati);
+                        }else{
+                            Condivisa.connessione.setConnectionNickname(Condivisa.connessione.getTempNickname());
                         }
+
+                        Condivisa.connessione.setAddress(Condivisa.connessione.getTempAddress());
                         Condivisa.frame.setConnessione();
+                        Condivisa.frame.PopupInformativo("Connessione stabilita con " + Condivisa.connessione.getConnectionNickname());
                         break;
                     case "n":
+                        Condivisa.connessione.setTempAddress(null);
                         break;
                     default:
                         break;
@@ -51,29 +56,30 @@ public class ClientUDP extends Thread {
         }
     }
 
-    public Messaggio ricevi() throws IOException, Exception {
+    public Messaggio receive() throws IOException, Exception {
         byte[] buffer = new byte[1500];
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
         client.receive(packet);
-        String messaggioRicevuto = new String(packet.getData(), 0, packet.getLength());
+        String messageReceived = new String(packet.getData(), 0, packet.getLength());
         lastAddress = packet.getAddress();
-        System.out.println(messaggioRicevuto);
-        return Messaggio.fromCSV(messaggioRicevuto);
+        System.out.println(messageReceived);
+        return Messaggio.fromCSV(messageReceived);
     }
 
-    public synchronized void invia(String risposta) throws IOException {
-        byte[] responseBuffer = risposta.getBytes();
-        DatagramPacket responsePacket = new DatagramPacket(responseBuffer, responseBuffer.length);
-        responsePacket.setAddress(Condivisa.connessione.getAddress());
-        responsePacket.setPort(port);
-        client.send(responsePacket);
+    public synchronized void send(InetAddress address, Messaggio message) throws IOException {
+        byte[] buffer = Messaggio.toCSV(message).getBytes();
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+        packet.setAddress(address);
+        packet.setPort(port);
+        client.send(packet);
     }
 
-    private void richiestaConnessione(String nick) throws IOException {
-        if (Condivisa.connessione.getAddress() == null) {
-            //Chiedo all'utente se vuole confermare la connessione
-            Condivisa.connessione.setAddress(lastAddress);
-            Condivisa.connessione.setConnectionNickname(nick);
+    private void connectionRequest(String nickname) throws IOException {
+        if (Condivisa.connessione.CanConnect()) {
+            Condivisa.connessione.setTempAddress(lastAddress);
+            Condivisa.connessione.setTempNickname(nickname);
+            Condivisa.connessione.CanConnect(false);
+
             int index = Condivisa.frame.PopupConfermaConnessione();
             if (index == 0) {
                 Condivisa.chat.accettaConnessione();
@@ -81,11 +87,8 @@ public class ClientUDP extends Thread {
             if (index == 1) {
                 Condivisa.chat.rifiutaConnessione();
             }
-        } else if (lastAddress != Condivisa.connessione.getAddress()) {
-            
-            invia("n;");
-        }else if(Condivisa.connessione.getAddress() == lastAddress){
-            invia("y;" + Condivisa.nickname.getNickname());
+        }else{
+            send(lastAddress, new Messaggio("n", ""));
         }
     }
 }

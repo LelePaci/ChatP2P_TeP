@@ -10,38 +10,40 @@ import java.net.UnknownHostException;
  */
 public class Connessione {
     private InetAddress address;
+    private InetAddress tempAddress;
     private String connectionNickname;
-    private boolean pending;
-    private boolean canText;
+    private String tempNickname;
+    private boolean canConnect;
 
     public Connessione() throws UnknownHostException {
         this.address = null;
-        connectionNickname = null;
-        pending = false;
-        canText = false;
+        this.tempAddress = null;
+        this.connectionNickname = "";
+        this.tempNickname = "";
+        this.canConnect = true;
     }
     
     public Connessione(InetAddress address, String nickname) {
         this.address = address;
         this.connectionNickname = nickname;
     }
-
+    
     public void setAddress(InetAddress address) {
         this.address = address;
     }
     
-    public void setAddressFromString(String address) throws UnknownHostException{
-        this.address = InetAddress.getByName(address);
+    public void setTempAddress(InetAddress tempAddress) {
+        this.tempAddress = tempAddress;
     }
-
+    
+    public void setAddressFromString(String address) throws UnknownHostException{
+        this.tempAddress = InetAddress.getByName(address);
+    }
+    
     public void setConnectionNickname(String nickname) {
         this.connectionNickname = nickname;
     }
 
-    public void setCanText(boolean canText) {
-        this.canText = canText;
-    }
-    
     public InetAddress getAddress() {
         return address;
     }
@@ -49,9 +51,25 @@ public class Connessione {
     public String getConnectionNickname() {
         return connectionNickname;
     }
+
+    public InetAddress getTempAddress() {
+        return tempAddress;
+    }
+
+    public void CanConnect(boolean canConnect) {
+        this.canConnect = canConnect;
+    }
     
-    public boolean canText(){
-        return canText;
+    public boolean CanConnect() {
+        return canConnect;
+    }
+
+    public String getTempNickname() {
+        return tempNickname;
+    }
+
+    public void setTempNickname(String tempNickname) {
+        this.tempNickname = tempNickname;
     }
     
     public static Connessione get(String address, String nickname) throws UnknownHostException{

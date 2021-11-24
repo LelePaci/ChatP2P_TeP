@@ -35,7 +35,11 @@ public class Messaggio {
         return new Messaggio(cmd, dat);
     }
     
-    public static String toCSV(String comando, String messaggio){
-        return comando + ";" + messaggio;
+    public static String toCSV(String comando, String dati){
+        return comando + ";" + dati;
+    }
+    
+    public static String toCSV(Messaggio messaggio){
+        return messaggio.comando + ";" + messaggio.dati;
     }
 }
