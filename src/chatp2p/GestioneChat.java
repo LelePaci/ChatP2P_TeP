@@ -27,11 +27,14 @@ public class GestioneChat {
         Condivisa.connessione.setTempAddress(null);
         Condivisa.connessione.setTempNickname("");
         Condivisa.connessione.CanConnect(true);
-        
     }
     
     public void inviaMessaggio(String comando, String dati) throws IOException { 
         Condivisa.client.send(Condivisa.connessione.getAddress(), new Messaggio(comando, dati));
+    }
+    
+    public void chiudiConnessione() throws IOException{
+        Condivisa.client.send(Condivisa.connessione.getAddress(), new Messaggio("e", ""));
     }
 
     public static String[] getComandi() {

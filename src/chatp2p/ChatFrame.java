@@ -158,7 +158,19 @@ public class ChatFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3MouseClicked
 
     private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
-        //CHIUDI CONNESSIONE
+        try {
+            //CHIUDI CONNESSIONE
+            Condivisa.chat.chiudiConnessione();
+            Condivisa.connessione.setTempAddress(null);
+            Condivisa.connessione.setAddress(null);
+            Condivisa.connessione.setConnectionNickname("");
+            Condivisa.connessione.setTempNickname("");
+            Condivisa.connessione.CanConnect(true);
+            chiudiConnessione();
+        } catch (IOException ex) {
+            Logger.getLogger(ChatFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_jButton4MouseClicked
 
     /**
@@ -232,20 +244,27 @@ public class ChatFrame extends javax.swing.JFrame {
 
     public int PopupConfermaConnessione() {
         //int input = JOptionPane.showConfirmDialog(null, "Accettare la connessione con  " + Condivisa.connessione.getConnectionNickname() + "?");
-        int input = JOptionPane.showConfirmDialog(null, "Accettare la connessione con  " + Condivisa.connessione.getTempNickname()+ "?", "Richiesta di connessione in arrivo",JOptionPane.YES_NO_OPTION);
+        int input = JOptionPane.showConfirmDialog(null, "Accettare la connessione con  " + Condivisa.connessione.getTempNickname() + "?", "Richiesta di connessione in arrivo", JOptionPane.YES_NO_OPTION);
         System.out.println(input);
         return input;
     }
 
-    public void PopupInformativo(String messaggio){
+    public void PopupInformativo(String messaggio) {
         JOptionPane.showMessageDialog(null, messaggio);
     }
-    
+
     public void setConnessione() {
         jLabel4.setText("Connesso con: " + Condivisa.connessione.getConnectionNickname() + " (" + Condivisa.connessione.getAddress().toString() + ")");
         jButton4.setEnabled(true);
         jButton1.setEnabled(false);
         jButton3.setEnabled(false);
+    }
+
+    public void chiudiConnessione() {
+        jLabel4.setText("Connesso con: nessuno");
+        jButton4.setEnabled(false);
+        jButton1.setEnabled(true);
+        jButton3.setEnabled(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
