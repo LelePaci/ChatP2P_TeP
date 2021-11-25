@@ -306,6 +306,8 @@ public class ChatFrame extends javax.swing.JFrame {
             jTextField1.setText("");
         }
     }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
