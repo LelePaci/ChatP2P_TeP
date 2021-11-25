@@ -72,6 +72,14 @@ public class Connessione {
         this.tempNickname = tempNickname;
     }
     
+    public void resetConnessione(){
+        address = null;
+        tempAddress = null;
+        canConnect = true;
+        connectionNickname = "";
+        tempNickname = "";                
+    }
+    
     public static Connessione get(String address, String nickname) throws UnknownHostException{
         InetAddress add = InetAddress.getByAddress(address.getBytes());
         return new Connessione(add, nickname);

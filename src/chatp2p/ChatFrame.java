@@ -12,17 +12,13 @@ public class ChatFrame extends javax.swing.JFrame {
     public ChatFrame() throws UnknownHostException, SocketException {
         initComponents();
 
-        Nickname nickname = new Nickname();
-        Connessione connessione = new Connessione();
-        ClientUDP client = new ClientUDP();
-        client.start();
-        GestioneChat chat = new GestioneChat();
-
         Condivisa.frame = this;
-        Condivisa.nickname = nickname;
-        Condivisa.connessione = connessione;
-        Condivisa.chat = chat;
-        Condivisa.client = client;
+        Condivisa.nickname = new Nickname();
+        Condivisa.connessione = new Connessione();
+        Condivisa.chat = new GestioneChat();
+        Condivisa.client = new ClientUDP();
+        Condivisa.client.start();
+
         this.setResizable(false);
         this.setLocationRelativeTo(null);
     }
@@ -181,12 +177,8 @@ public class ChatFrame extends javax.swing.JFrame {
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
         //NUOVA CONNESSIONE
-        String s = (String) JOptionPane.showInputDialog(null, "Inserisci indirizzo IP", "Nuova connessione", JOptionPane.PLAIN_MESSAGE);
         try {
-            Condivisa.connessione.setAddressFromString(s);
             Condivisa.chat.startConnessione();
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(ChatFrame.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(ChatFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -198,7 +190,7 @@ public class ChatFrame extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(ChatFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        chiudiConnessione();
+        Condivisa.chat.connectionClosed();
     }//GEN-LAST:event_jButton4MouseClicked
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
@@ -274,32 +266,29 @@ public class ChatFrame extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, messaggio);
     }
 
-    public void setConnessione() {
-        jLabel4.setText("Connesso con: " + Condivisa.connessione.getConnectionNickname() + " (" + Condivisa.connessione.getAddress().toString() + ")");
-        jButton4.setEnabled(true);
-        jButton1.setEnabled(false);
-        jButton3.setEnabled(false);
-        list1.setEnabled(true);
-        jButton2.setEnabled(true);
-        jTextField1.setEnabled(true);
+    public String PopupInputString(String title, String message) {
+        return (String) JOptionPane.showInputDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
     }
 
-    public void chiudiConnessione() {
-        //CHIUDI CONNESSIONE
-        Condivisa.connessione.setTempAddress(null);
-        Condivisa.connessione.setAddress(null);
-        Condivisa.connessione.setConnectionNickname("");
-        Condivisa.connessione.setTempNickname("");
-        Condivisa.connessione.CanConnect(true);
-        jLabel4.setText("Connesso con: nessuno");
-        jButton4.setEnabled(false);
-        jButton1.setEnabled(true);
-        jButton3.setEnabled(true);
-        list1.setEnabled(false);
-        jButton2.setEnabled(false);
-        jTextField1.setEnabled(false);
-        PopupInformativo("La connessione è terminata");
-        list1.clear();
+    public void setConnectionStatus(String nickname, String address, boolean status) {
+        String text = "Connesson con: " + nickname;
+        if (status) {
+            text += " (" + address + ")";
+        } else {
+            PopupInformativo("La connessione è terminata");
+            list1.clear();
+        }
+        jLabel4.setText(text);
+        setButtons(status);
+    }
+
+    public void setButtons(boolean status) {
+        jButton4.setEnabled(status);
+        jButton1.setEnabled(!status);
+        jButton3.setEnabled(!status);
+        list1.setEnabled(status);
+        jButton2.setEnabled(status);
+        jTextField1.setEnabled(status);
     }
 
     public void addTextToList(String nickname, String messaggio) {

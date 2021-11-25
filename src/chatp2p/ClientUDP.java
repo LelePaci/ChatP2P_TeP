@@ -29,27 +29,19 @@ public class ClientUDP extends Thread {
                 Messaggio m = receive();
                 switch (m.comando) {
                     case "c":
-                        connectionRequest(m.dati);
+                        Condivisa.chat.connectionRequest(lastAddress, m.dati);
                         break;
                     case "y":
-                        if (m.dati.length()>=1) {
-                            Condivisa.connessione.setConnectionNickname(m.dati);
-                        }else{
-                            Condivisa.connessione.setConnectionNickname(Condivisa.connessione.getTempNickname());
-                        }
-
-                        Condivisa.connessione.setAddress(Condivisa.connessione.getTempAddress());
-                        Condivisa.frame.setConnessione();
-                        Condivisa.frame.PopupInformativo("Connessione stabilita con " + Condivisa.connessione.getConnectionNickname());
+                        Condivisa.chat.connectionEstablishing(m.dati);
                         break;
                     case "n":
-                        Condivisa.connessione.setTempAddress(null);
+                        Condivisa.connessione.resetConnessione();
                         break;
                     case "m":
-                        Condivisa.frame.addTextToList(Condivisa.connessione.getConnectionNickname(), m.dati);
+                        Condivisa.chat.messageReceived(m.dati);
                         break;
                     case "e":
-                        Condivisa.frame.chiudiConnessione();
+                        Condivisa.chat.connectionClosed();
                         break;
                     default:
                         break;
@@ -78,23 +70,5 @@ public class ClientUDP extends Thread {
         packet.setAddress(address);
         packet.setPort(port);
         client.send(packet);
-    }
-
-    private void connectionRequest(String nickname) throws IOException {
-        if (Condivisa.connessione.CanConnect()) {
-            Condivisa.connessione.setTempAddress(lastAddress);
-            Condivisa.connessione.setTempNickname(nickname);
-            Condivisa.connessione.CanConnect(false);
-
-            int index = Condivisa.frame.PopupConfermaConnessione();
-            if (index == 0) {
-                Condivisa.chat.accettaConnessione();
-            }
-            if (index == 1) {
-                Condivisa.chat.rifiutaConnessione();
-            }
-        }else{
-            send(lastAddress, new Messaggio("n", ""));
-        }
     }
 }
