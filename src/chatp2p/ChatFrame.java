@@ -185,12 +185,12 @@ public class ChatFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3MouseClicked
 
     private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
+        //CHIUDI CONNESSIONE
         try {
             Condivisa.chat.chiudiConnessione();
         } catch (IOException ex) {
             Logger.getLogger(ChatFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Condivisa.chat.connectionClosed();
     }//GEN-LAST:event_jButton4MouseClicked
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
@@ -198,7 +198,6 @@ public class ChatFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2MouseClicked
 
     private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
-        //System.out.println(evt.getKeyCode());
         if (evt.getKeyCode() == 10) {
             pressEnter();
         }
@@ -279,10 +278,10 @@ public class ChatFrame extends javax.swing.JFrame {
             list1.clear();
         }
         jLabel4.setText(text);
-        setButtons(status);
+        setObjectsStatus(status);
     }
 
-    public void setButtons(boolean status) {
+    public void setObjectsStatus(boolean status) {
         jButton4.setEnabled(status);
         jButton1.setEnabled(!status);
         jButton3.setEnabled(!status);

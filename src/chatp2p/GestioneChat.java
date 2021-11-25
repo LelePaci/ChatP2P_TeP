@@ -44,6 +44,7 @@ public class GestioneChat {
 
     public void chiudiConnessione() throws IOException {
         Condivisa.client.send(Condivisa.connessione.getAddress(), new Messaggio("e", ""));
+        Condivisa.chat.connectionClosed();
     }
 
     public void connectionRequest(InetAddress lastAddress, String nickname) throws IOException {
