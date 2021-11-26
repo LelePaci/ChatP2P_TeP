@@ -300,16 +300,16 @@ public class ChatFrame extends javax.swing.JFrame {
 
     public void pressEnter() {
         if (jTextField1.getText().length() != 0) {
-            addTextToList(Condivisa.nickname.getNickname(), jTextField1.getText());
+            String text = jTextField1.getText();
+            addTextToList(Condivisa.nickname.getNickname(), text);
+            jTextField1.setText("");
             try {
-                Condivisa.chat.inviaMessaggio(jTextField1.getText());
+                Condivisa.chat.inviaMessaggio(text);                
             } catch (IOException ex) {
                 Logger.getLogger(ChatFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
-            jTextField1.setText("");
         }
     }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
