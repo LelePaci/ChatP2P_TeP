@@ -1,0 +1,29 @@
+Connessione
+porta UDP: 2003 (Invio e ricezione);
+
+Legenda:
+c -> Richiesta di connessione (con parametri)
+y -> Connessione accettata (con parametri)
+n -> Rifiuto della connessione (senza parametri)
+m -> Invio di un messaggio (con parametri)
+e -> Termine della connessione (senza parametri)
+
+Peer 1:
+Richiesta di connessione (annullabile)
+Invio: "c;NICKNAME"
+
+Peer 2:
+Risponde: "y;NICKNAME"
+Risponde: "n;"
+
+Peer 1:
+Risponde: "y;"
+Risponde: "n;"
+
+Durante l'attesa della risposta da un peer, in caso di richiesta di connessione da un ulteriore peer, tale richiesta viene annullata automaticamente da programma
+
+Invio di un messaggio: "m;MESSAGGIO_DA_INVIARE"
+
+Chiusura connessione: "e;"
+La connessione viene chiusa immediatamente
+In caso di riceazione di un messaggio da una connessione chiusa risponde automaticamente con il messaggio di chiusura della connessione
