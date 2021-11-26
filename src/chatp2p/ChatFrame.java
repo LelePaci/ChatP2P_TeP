@@ -19,6 +19,9 @@ public class ChatFrame extends javax.swing.JFrame {
         Condivisa.client = new ClientUDP();
         Condivisa.client.start();
 
+        ControlloConsole cc = new ControlloConsole();
+        cc.start();
+
         this.setResizable(false);
         this.setLocationRelativeTo(null);
     }
