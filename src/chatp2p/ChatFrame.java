@@ -291,7 +291,7 @@ public class ChatFrame extends javax.swing.JFrame {
     }
 
     public void addTextToList(String nickname, String messaggio) {
-        String toAdd = nickname + ": " + messaggio;
+        String toAdd = DataOra.getTime() + " " + nickname + ": " + messaggio;
         list1.add(toAdd);
     }
 
